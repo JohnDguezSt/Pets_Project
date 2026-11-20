@@ -1,0 +1,26 @@
+@layer components {
+  .empty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-sm);
+    align-items: center;
+    padding: var(--space-stack-xl) var(--space-inline-lg);
+    border: var(--border-width-thin) dashed var(--color-border-subtle);
+    border-radius: var(--radius-card);
+    text-align: center;
+  }
+
+  .title {
+    font-size: var(--text-heading-3-size);
+    line-height: var(--text-heading-3-line-height);
+  }
+
+  .description {
+    max-inline-size: var(--size-reading-max);
+    color: var(--color-text-secondary);
+  }
+
+  .action {
+    margin-block-start: var(--space-stack-sm);
+  }
+}

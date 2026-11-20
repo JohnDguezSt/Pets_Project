@@ -165,3 +165,8 @@ vite.config.ts.timestamp-*
 next-env.d.ts
 .pnpm-debug.log*
 *.pem
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/

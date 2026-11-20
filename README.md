@@ -16,6 +16,7 @@ pnpm install       # instala dependencias
 pnpm dev           # servidor de desarrollo en http://localhost:3000
 pnpm check         # lint de código, lint de estilos y tipos
 pnpm build         # build de producción
+pnpm test:e2e      # accesibilidad en navegador (Playwright + axe)
 ```
 
 ## Estructura
@@ -23,12 +24,14 @@ pnpm build         # build de producción
 ```
 src/
   app/              rutas y pantallas
-  design-system/    tokens, estilos globales y primitivas (no conoce el producto)
+  design-system/    tokens, estilos, maquetación, iconos, primitivos y patrones (no conoce el producto)
   i18n/             textos de la interfaz (es-MX)
 docs/
   ESTADO.md         decisiones técnicas, terminado y pendiente
   adr/              registro de decisiones de arquitectura
 ```
+
+Catálogo de componentes: `pnpm dev` y abre http://localhost:3000/dev/catalogo (también en las vistas previas de Vercel; en producción no existe).
 
 Las carpetas `domain/`, `features/`, `services/` y `server/` se crean cuando el primer paso las necesite.
 

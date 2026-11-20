@@ -16,18 +16,22 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 | Repositorio público: nunca secretos ni datos reales | Decisión del 17 nov 2026 | — |
 | Supabase "Pets Platform" (us-west-2) = desarrollo; producción será otro proyecto | Aprobada | Precisión 7 |
 | Migraciones nunca automáticas: integración GitHub de Supabase sin despliegue automático | Aplicada | — |
+| Componentes sobre elementos HTML nativos; sin biblioteca *headless* hasta el primer Dialog o ComboBox | Aplicada | Doc. 16 §7 |
+| Pruebas de accesibilidad automáticas con Playwright + axe (WCAG 2.2 AA) en la CI | Aplicada | Doc. 16 §11 |
+| Catálogo interno `/dev/catalogo` solo en desarrollo y vistas previas | Aplicada | Doc. 16 §10 |
 
 ## Terminado
 
 - **Paso 1 — Cimientos:** reglas automáticas (TypeScript estricto, límites de importación entre capas, Stylelint que solo admite tokens), tokens base y semánticos, capas de estilos, primitivas de maquetación (`Stack`, `Cluster`, `Grid`, `Container`), textos en `es-MX`, manifest de la PWA, Inicio con el estado honesto de la alfa y CI.
 
+- **Paso 1b — Componentes atómicos:** Button, Input, Select, RadioGroup, Card, FormField, Alert, EmptyState e iconos de estado, cada uno con su ficha. Catálogo interno en claro y oscuro. Pruebas de accesibilidad automáticas (axe en móvil y escritorio, ambos temas), foco visible y campos con error.
+
 ## Pendiente (en orden)
 
-1. **Paso 1b:** componentes atómicos del hito (Button, Input, Select, RadioGroup, FormField, Alert, EmptyState, Card) y catálogo interno.
-2. **Paso 2:** base de datos y RLS con pruebas de acceso cruzado.
-3. **Paso 3:** autenticación.
-4. **Pasos 4–7:** Mis mascotas, alta, perfil y edición, fotografía.
-5. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
+1. **Paso 2:** base de datos y RLS con pruebas de acceso cruzado.
+2. **Paso 3:** autenticación.
+3. **Pasos 4–7:** Mis mascotas, alta, perfil y edición, fotografía.
+4. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
 
 ## Fuera del primer hito
 
