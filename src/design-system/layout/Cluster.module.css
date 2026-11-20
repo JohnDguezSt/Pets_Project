@@ -1,0 +1,25 @@
+@layer layout {
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-gap, var(--space-inline-sm));
+    align-items: var(--cluster-align, center);
+    justify-content: var(--cluster-justify, flex-start);
+  }
+
+  .cluster[data-gap="none"] { --cluster-gap: 0; }
+  .cluster[data-gap="xs"] { --cluster-gap: var(--space-inline-xs); }
+  .cluster[data-gap="sm"] { --cluster-gap: var(--space-inline-sm); }
+  .cluster[data-gap="md"] { --cluster-gap: var(--space-inline-md); }
+  .cluster[data-gap="lg"] { --cluster-gap: var(--space-inline-lg); }
+  .cluster[data-gap="xl"] { --cluster-gap: var(--space-stack-xl); }
+  .cluster[data-gap="section"] { --cluster-gap: var(--space-section); }
+  .cluster[data-align="start"] { --cluster-align: flex-start; }
+  .cluster[data-align="center"] { --cluster-align: center; }
+  .cluster[data-align="end"] { --cluster-align: flex-end; }
+  .cluster[data-align="baseline"] { --cluster-align: baseline; }
+  .cluster[data-justify="start"] { --cluster-justify: flex-start; }
+  .cluster[data-justify="center"] { --cluster-justify: center; }
+  .cluster[data-justify="end"] { --cluster-justify: flex-end; }
+  .cluster[data-justify="between"] { --cluster-justify: space-between; }
+}

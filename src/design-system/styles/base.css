@@ -1,0 +1,65 @@
+/*
+ * Estilos base globales: solo lo imprescindible (doc. 16 §6).
+ * Solo tokens semánticos.
+ */
+@layer base {
+  html {
+    background-color: var(--color-surface-page);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 100%; /* respeta el tamaño de texto elegido por la persona */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-size: var(--text-body-size);
+    font-weight: var(--text-body-weight);
+    line-height: var(--text-body-line-height);
+  }
+
+  h1 {
+    font-size: var(--text-heading-1-size);
+    font-weight: var(--text-heading-1-weight);
+    line-height: var(--text-heading-1-line-height);
+  }
+
+  h2 {
+    font-size: var(--text-heading-2-size);
+    font-weight: var(--text-heading-2-weight);
+    line-height: var(--text-heading-2-line-height);
+  }
+
+  h3 {
+    font-size: var(--text-heading-3-size);
+    font-weight: var(--text-heading-3-weight);
+    line-height: var(--text-heading-3-line-height);
+  }
+
+  small {
+    font-size: var(--text-caption-size);
+    line-height: var(--text-caption-line-height);
+  }
+
+  a {
+    color: var(--color-text-link);
+    text-decoration-thickness: var(--border-width-thin);
+    text-underline-offset: 0.15em;
+  }
+
+  /* Un único estilo de foco, visible y nunca eliminado (doc. 16 §7) */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  ::selection {
+    background-color: var(--color-status-info-bg);
+    color: var(--color-text-primary);
+  }
+
+  /* Las dosis, pesos y horarios usan cifras tabulares */
+  data,
+  time {
+    font-variant-numeric: var(--text-data-numeric);
+  }
+}
