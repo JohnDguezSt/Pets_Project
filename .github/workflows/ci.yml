@@ -48,3 +48,18 @@ jobs:
       - run: pnpm test:e2e
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+
+  db:
+    name: Base de datos (migraciones, lint y pruebas RLS)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      # Base local y desechable dentro de la CI: nunca se conecta a un proyecto remoto.
+      - run: npm install --global supabase@3.2.0
+      - run: supabase db start
+      - run: supabase db lint --level warning --fail-on warning
+      - run: supabase test db

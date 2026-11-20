@@ -1,0 +1,1 @@
+-- Sin datos reales. Solo datos ficticios de desarrollo cuando hagan falta.
