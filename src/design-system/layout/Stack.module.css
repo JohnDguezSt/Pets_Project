@@ -1,0 +1,15 @@
+@layer layout {
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap, var(--space-stack-md));
+  }
+
+  .stack[data-gap="none"] { --stack-gap: 0; }
+  .stack[data-gap="xs"] { --stack-gap: var(--space-stack-xs); }
+  .stack[data-gap="sm"] { --stack-gap: var(--space-stack-sm); }
+  .stack[data-gap="md"] { --stack-gap: var(--space-stack-md); }
+  .stack[data-gap="lg"] { --stack-gap: var(--space-stack-lg); }
+  .stack[data-gap="xl"] { --stack-gap: var(--space-stack-xl); }
+  .stack[data-gap="section"] { --stack-gap: var(--space-section); }
+}

@@ -1,0 +1,18 @@
+@layer layout {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-min, 18rem), 100%), 1fr));
+    gap: var(--grid-gap, var(--space-stack-md));
+  }
+
+  .grid[data-min="sm"] { --grid-min: 12rem; }
+  .grid[data-min="md"] { --grid-min: 18rem; }
+  .grid[data-min="lg"] { --grid-min: 24rem; }
+  .grid[data-gap="none"] { --grid-gap: 0; }
+  .grid[data-gap="xs"] { --grid-gap: var(--space-stack-xs); }
+  .grid[data-gap="sm"] { --grid-gap: var(--space-stack-sm); }
+  .grid[data-gap="md"] { --grid-gap: var(--space-stack-md); }
+  .grid[data-gap="lg"] { --grid-gap: var(--space-stack-lg); }
+  .grid[data-gap="xl"] { --grid-gap: var(--space-stack-xl); }
+  .grid[data-gap="section"] { --grid-gap: var(--space-section); }
+}

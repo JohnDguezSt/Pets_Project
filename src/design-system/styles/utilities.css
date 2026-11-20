@@ -1,0 +1,14 @@
+/* Utilidades propias. Pocas y justificadas; cada una con su motivo. */
+@layer utilities {
+  /* Oculta visualmente sin ocultar al lector de pantalla */
+  .visuallyHidden:not(:focus, :active) {
+    position: absolute;
+    /* stylelint-disable-next-line unit-disallowed-list -- técnica de ocultación, no un valor de diseño */
+    inline-size: 1px;
+    /* stylelint-disable-next-line unit-disallowed-list -- ídem */
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

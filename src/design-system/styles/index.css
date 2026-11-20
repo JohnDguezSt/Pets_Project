@@ -1,0 +1,17 @@
+/*
+ * Punto de entrada de los estilos globales. Se importa UNA vez, en el layout raíz.
+ *
+ * Orden de las capas de cascada (doc. 16 §6). Una capa posterior gana a una
+ * anterior sin necesidad de especificidad ni !important:
+ *   reset → tokens → base → layout → components → utilities
+ *
+ * Los CSS Modules de los componentes envuelven sus reglas en
+ * `@layer components { ... }` y las primitivas de maquetación en `@layer layout`.
+ */
+@layer reset, tokens, base, layout, components, utilities;
+
+@import "./reset.css";
+@import "../tokens/base.css";
+@import "../tokens/semantic.css";
+@import "./base.css";
+@import "./utilities.css";

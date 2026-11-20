@@ -1,0 +1,169 @@
+/*
+ * Tokens SEMÁNTICOS: valores con una intención. Son los únicos que usan
+ * componentes y páginas (doc. 16 §2).
+ *
+ * Tema claro y oscuro SIN duplicar: cada color se define una sola vez con
+ * light-dark(claro, oscuro). El tema lo decide `color-scheme`:
+ *   - por defecto, la preferencia del sistema;
+ *   - <html data-theme="light|dark"> fuerza uno (elección manual, C-07).
+ */
+@layer tokens {
+  :root {
+    color-scheme: light dark;
+
+    /* Superficies */
+    --color-surface-page: light-dark(var(--color-neutral-50), var(--color-neutral-950));
+    --color-surface-card: light-dark(var(--color-neutral-0), var(--color-neutral-900));
+    --color-surface-raised: light-dark(var(--color-neutral-0), var(--color-neutral-850));
+    --color-surface-sunken: light-dark(var(--color-neutral-100), var(--color-neutral-950));
+    --color-surface-overlay: light-dark(var(--color-neutral-0), var(--color-neutral-850));
+
+    /* Texto */
+    --color-text-primary: light-dark(var(--color-neutral-900), var(--color-neutral-50));
+    --color-text-secondary: light-dark(var(--color-neutral-700), var(--color-neutral-200));
+    --color-text-muted: light-dark(var(--color-neutral-600), var(--color-neutral-300));
+    --color-text-link: light-dark(var(--color-neutral-900), var(--color-neutral-25));
+    --color-text-on-action: light-dark(var(--color-neutral-0), var(--color-neutral-950));
+
+    /* Marca [PROVISIONAL]: neutra hasta el brief de marca (R24-1) */
+    --color-brand-primary: light-dark(var(--color-neutral-900), var(--color-neutral-50));
+
+    /* Acciones */
+    --color-action-primary-bg: light-dark(var(--color-neutral-900), var(--color-neutral-50));
+    --color-action-primary-bg-hover: light-dark(var(--color-neutral-700), var(--color-neutral-200));
+    --color-action-primary-text: var(--color-text-on-action);
+    --color-action-secondary-bg: light-dark(var(--color-neutral-0), var(--color-neutral-900));
+    --color-action-secondary-bg-hover: light-dark(var(--color-neutral-100), var(--color-neutral-850));
+    --color-action-secondary-text: var(--color-text-primary);
+    --color-action-danger-bg: light-dark(var(--color-red-700), var(--color-red-300));
+    --color-action-danger-text: light-dark(var(--color-neutral-0), var(--color-red-950));
+    --color-action-disabled-bg: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    --color-action-disabled-text: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+
+    /* Bordes */
+    --color-border-subtle: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    --color-border-strong: light-dark(var(--color-neutral-500), var(--color-neutral-500));
+    --border-width-thin: var(--border-width-1);
+    --border-width-thick: var(--border-width-2);
+
+    /* Estados: nunca solo color (doc. 20 §17) */
+    --color-status-danger-text: light-dark(var(--color-red-700), var(--color-red-300));
+    --color-status-danger-bg: light-dark(var(--color-red-50), var(--color-red-950));
+    --color-status-danger-border: light-dark(var(--color-red-600), var(--color-red-300));
+    --color-status-warning-text: light-dark(var(--color-amber-700), var(--color-amber-300));
+    --color-status-warning-bg: light-dark(var(--color-amber-50), var(--color-amber-950));
+    --color-status-warning-border: light-dark(var(--color-amber-600), var(--color-amber-300));
+    --color-status-success-text: light-dark(var(--color-green-700), var(--color-green-300));
+    --color-status-success-bg: light-dark(var(--color-green-50), var(--color-green-950));
+    --color-status-success-border: light-dark(var(--color-green-600), var(--color-green-300));
+    --color-status-info-text: light-dark(var(--color-blue-700), var(--color-blue-300));
+    --color-status-info-bg: light-dark(var(--color-blue-50), var(--color-blue-950));
+    --color-status-info-border: light-dark(var(--color-blue-600), var(--color-blue-300));
+
+    /* Foco: un único estilo en toda la aplicación */
+    --focus-ring-color: light-dark(var(--color-blue-700), var(--color-blue-300));
+    --focus-ring-width: var(--border-width-2);
+    --focus-ring-offset: var(--border-width-2);
+
+    /* Espaciado semántico (modo de densidad "cómoda" por defecto) */
+    --space-inline-xs: var(--space-1);
+    --space-inline-sm: var(--space-2);
+    --space-inline-md: var(--space-3);
+    --space-inline-lg: var(--space-4);
+    --space-stack-xs: var(--space-1);
+    --space-stack-sm: var(--space-2);
+    --space-stack-md: var(--space-4);
+    --space-stack-lg: var(--space-6);
+    --space-stack-xl: var(--space-8);
+    --space-section: var(--space-12);
+    --space-gutter: var(--space-4);
+
+    /* Tipografía por rol (doc. 20 §7) */
+    --font-body: var(--font-family-sans);
+    --text-heading-1-size: var(--font-size-fluid-heading);
+    --text-heading-1-weight: var(--font-weight-semibold);
+    --text-heading-1-line-height: var(--line-height-120);
+    --text-heading-2-size: var(--font-size-20);
+    --text-heading-2-weight: var(--font-weight-semibold);
+    --text-heading-2-line-height: var(--line-height-125);
+    --text-heading-3-size: var(--font-size-17);
+    --text-heading-3-weight: var(--font-weight-semibold);
+    --text-heading-3-line-height: var(--line-height-130);
+    --text-body-size: var(--font-size-16);
+    --text-body-weight: var(--font-weight-regular);
+    --text-body-line-height: var(--line-height-150);
+    --text-label-size: var(--font-size-16);
+    --text-label-weight: var(--font-weight-medium);
+    --text-label-line-height: var(--line-height-130);
+    --text-caption-size: var(--font-size-14);
+    --text-caption-weight: var(--font-weight-regular);
+    --text-caption-line-height: var(--line-height-140);
+    --text-data-weight: var(--font-weight-medium);
+    --text-data-numeric: tabular-nums;
+
+    /* Tamaños */
+    --size-icon-sm: var(--size-4);
+    --size-icon-md: var(--size-5);
+    --size-control-sm: var(--size-9);
+    --size-control-md: var(--size-11);
+    --size-control-lg: var(--size-12);
+    --size-target-min: var(--size-6);
+    --size-target-touch: var(--size-11);
+    --size-content-max: 72rem;
+    --size-reading-max: 68ch;
+
+    /* Radios */
+    --radius-control: var(--radius-2);
+    --radius-card: var(--radius-3);
+    --radius-pill: var(--radius-full);
+
+    /* Elevación: en oscuro se apoya en el tono de la superficie */
+    --shadow-raised: 0 1px 2px light-dark(rgb(33 31 27 / 8%), rgb(0 0 0 / 40%));
+    --shadow-overlay: 0 8px 24px light-dark(rgb(33 31 27 / 14%), rgb(0 0 0 / 55%));
+
+    /* Movimiento */
+    --duration-fast: var(--duration-100);
+    --duration-base: var(--duration-150);
+    --duration-slow: var(--duration-250);
+    --easing-standard: var(--easing-out);
+    --easing-exit: var(--easing-in);
+
+    /* Capas (z-index con nombre; prohibidos los números sueltos) */
+    --layer-base: 0;
+    --layer-sticky: 100;
+    --layer-dropdown: 200;
+    --layer-overlay: 300;
+    --layer-modal: 400;
+    --layer-toast: 500;
+
+    /* Proporciones de imagen (doc. 20 §8) [PENDIENTE] confirmar con fotos reales */
+    --aspect-card: 4 / 3;
+    --aspect-avatar: 1 / 1;
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  /* Densidad compacta: expediente, historial, organizaciones (doc. 20 §11) */
+  [data-density="compact"] {
+    --space-stack-sm: var(--space-1);
+    --space-stack-md: var(--space-3);
+    --space-stack-lg: var(--space-4);
+    --space-stack-xl: var(--space-6);
+    --space-section: var(--space-8);
+  }
+
+  /* Movimiento reducido: las duraciones se acercan a cero */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-fast: var(--duration-0);
+      --duration-base: var(--duration-0);
+      --duration-slow: var(--duration-0);
+    }
+  }
+}
