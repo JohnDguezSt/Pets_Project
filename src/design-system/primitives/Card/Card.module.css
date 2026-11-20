@@ -1,0 +1,12 @@
+@layer components {
+  .card {
+    padding: var(--card-padding, var(--space-stack-md));
+    border: var(--border-width-thin) solid var(--color-border-subtle);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-card);
+    color: var(--color-text-primary);
+  }
+
+  .card[data-padding="sm"] { --card-padding: var(--space-stack-sm); }
+  .card[data-padding="md"] { --card-padding: var(--space-stack-md); }
+}

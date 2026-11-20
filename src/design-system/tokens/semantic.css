@@ -8,7 +8,13 @@
  *   - <html data-theme="light|dark"> fuerza uno (elección manual, C-07).
  */
 @layer tokens {
-  :root {
+  /*
+   * Se declaran también en cada [data-theme]: Chrome resuelve light-dark()
+   * en el elemento donde se declara la variable, así que una zona con otro
+   * tema necesita recalcularlas allí. Es la misma declaración, no una copia.
+   */
+  :root,
+  [data-theme] {
     color-scheme: light dark;
 
     /* Superficies */
@@ -125,6 +131,7 @@
     --duration-fast: var(--duration-100);
     --duration-base: var(--duration-150);
     --duration-slow: var(--duration-250);
+    --duration-loop: var(--duration-800); /* indicadores de carga */
     --easing-standard: var(--easing-out);
     --easing-exit: var(--easing-in);
 
@@ -141,11 +148,16 @@
     --aspect-avatar: 1 / 1;
   }
 
-  :root[data-theme="light"] {
+  /*
+   * Forzar un tema en la página (<html data-theme>) o en una zona concreta,
+   * como el catálogo interno. Los tokens se recalculan en ese elemento
+   * (ver el selector del bloque principal).
+   */
+  [data-theme="light"] {
     color-scheme: light;
   }
 
-  :root[data-theme="dark"] {
+  [data-theme="dark"] {
     color-scheme: dark;
   }
 

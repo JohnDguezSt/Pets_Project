@@ -11,6 +11,17 @@ export const esMX = {
     shortName: "Cuidado animal",
     description: "Expediente, cuidados y recordatorios de tus animales, en un solo lugar.",
   },
+  /** Textos genéricos de los componentes del sistema de diseño. */
+  ui: {
+    optional: "opcional",
+    loading: "Cargando…",
+    status: {
+      info: "Información",
+      success: "Hecho",
+      warning: "Atención",
+      danger: "Error",
+    },
+  },
   home: {
     title: "Estamos construyendo la plataforma",
     intro:

@@ -95,6 +95,7 @@
     --duration-100: 100ms;
     --duration-150: 150ms;
     --duration-250: 250ms;
+    --duration-800: 800ms;
     --easing-out: cubic-bezier(0.2, 0, 0, 1);
     --easing-in: cubic-bezier(0.4, 0, 1, 1);
 

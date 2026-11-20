@@ -1,0 +1,39 @@
+@layer components {
+  .wrapper {
+    position: relative;
+    display: block;
+  }
+
+  .select {
+    inline-size: 100%;
+    min-block-size: var(--size-control-md);
+    padding-inline: var(--space-inline-md) calc(var(--space-inline-md) * 2 + var(--size-icon-sm));
+    border: var(--border-width-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface-card);
+    color: var(--color-text-primary);
+    font-size: var(--text-body-size);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .select[aria-invalid="true"] {
+    border-color: var(--color-status-danger-border);
+    border-width: var(--border-width-thick);
+  }
+
+  .select:disabled {
+    background-color: var(--color-action-disabled-bg);
+    color: var(--color-action-disabled-text);
+    cursor: not-allowed;
+  }
+
+  .chevron {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: var(--space-inline-md);
+    translate: 0 -50%;
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+}

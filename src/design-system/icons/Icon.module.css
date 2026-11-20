@@ -1,0 +1,10 @@
+@layer components {
+  .icon {
+    flex: none;
+    inline-size: var(--icon-size, var(--size-icon-md));
+    block-size: var(--icon-size, var(--size-icon-md));
+  }
+
+  .icon[data-size="sm"] { --icon-size: var(--size-icon-sm); }
+  .icon[data-size="md"] { --icon-size: var(--size-icon-md); }
+}

@@ -1,0 +1,76 @@
+@layer components {
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-sm);
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
+  }
+
+  .legend {
+    padding: 0;
+    margin-block-end: var(--space-stack-xs);
+    font-size: var(--text-label-size);
+    font-weight: var(--text-label-weight);
+    line-height: var(--text-label-line-height);
+  }
+
+  .hint,
+  .optionHint {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption-size);
+    line-height: var(--text-caption-line-height);
+  }
+
+  .optionHint {
+    display: block;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-xs);
+  }
+
+  .options[data-orientation="horizontal"] {
+    flex-flow: row wrap;
+    gap: var(--space-inline-lg);
+  }
+
+  .option {
+    display: flex;
+    gap: var(--space-inline-sm);
+    align-items: flex-start;
+    min-block-size: var(--size-target-touch);
+    padding-block: var(--space-stack-sm);
+  }
+
+  .radio {
+    flex: none;
+    inline-size: var(--size-icon-md);
+    block-size: var(--size-icon-md);
+    margin-block-start: var(--space-stack-xs);
+    accent-color: var(--color-action-primary-bg);
+    cursor: pointer;
+  }
+
+  .label {
+    cursor: pointer;
+  }
+
+  .group:disabled .label,
+  .group:disabled .radio {
+    color: var(--color-action-disabled-text);
+    cursor: not-allowed;
+  }
+
+  .error {
+    display: flex;
+    gap: var(--space-inline-xs);
+    align-items: center;
+    color: var(--color-status-danger-text);
+    font-size: var(--text-caption-size);
+    font-weight: var(--font-weight-medium);
+  }
+}
