@@ -4,6 +4,10 @@ import { expect, test } from "@playwright/test";
 const pages = [
   { name: "Inicio", path: "/" },
   { name: "Catálogo", path: "/dev/catalogo" },
+  { name: "Entrar", path: "/entrar" },
+  { name: "Crear cuenta", path: "/crear-cuenta" },
+  { name: "Recuperar contraseña", path: "/recuperar" },
+  { name: "Confirmar enlace", path: "/auth/confirmar?token_hash=x&type=email" },
 ];
 
 /** WCAG 2.2 AA es la referencia del proyecto (doc. 16). */

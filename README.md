@@ -17,7 +17,7 @@ pnpm install       # instala dependencias
 pnpm dev           # servidor de desarrollo en http://localhost:3000
 pnpm check         # lint de código, lint de estilos y tipos
 pnpm build         # build de producción
-pnpm test:e2e      # accesibilidad en navegador (Playwright + axe)
+pnpm test:e2e      # navegador: cuentas y accesibilidad (requiere Supabase local)
 ```
 
 ### Base de datos local
@@ -31,6 +31,14 @@ supabase db lint   # revisión de seguridad y rendimiento del esquema
 supabase db reset  # borra la base local y la recrea desde las migraciones
 ```
 
+Para usar la app con cuentas en tu equipo, levanta Supabase completo y copia sus valores públicos:
+
+```bash
+supabase start -x realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+supabase status          # copia API_URL y PUBLISHABLE_KEY a .env.local (ver .env.example)
+pnpm dev                 # los correos de prueba se ven en http://127.0.0.1:54324
+```
+
 Las migraciones viven en `supabase/migrations/` y nunca se aplican solas: aplicar una a un proyecto remoto es una decisión aparte, revisada y aprobada.
 
 ## Estructura
@@ -39,9 +47,14 @@ Las migraciones viven en `supabase/migrations/` y nunca se aplican solas: aplica
 src/
   app/              rutas y pantallas
   design-system/    tokens, estilos, maquetación, iconos, primitivos y patrones (no conoce el producto)
+  domain/           reglas puras, sin interfaz ni proveedores
+  features/         funcionalidades (por ahora, auth)
+  server/           acceso a Supabase desde el servidor (nunca llega al navegador)
+  proxy.ts          renueva la sesión en cada petición
   i18n/             textos de la interfaz (es-MX)
 supabase/
   migrations/       cambios del esquema (SQL), en orden
+  templates/        correos de Auth en español
   tests/database/   pruebas pgTAP de permisos y RLS
 docs/
   ESTADO.md         decisiones técnicas, terminado y pendiente
@@ -50,7 +63,7 @@ docs/
 
 Catálogo de componentes: `pnpm dev` y abre http://localhost:3000/dev/catalogo (también en las vistas previas de Vercel; en producción no existe).
 
-Las carpetas `domain/`, `features/`, `services/` y `server/` se crean cuando el primer paso las necesite.
+La carpeta `services/` se creará cuando un paso la necesite.
 
 ## Reglas que la CI hace cumplir
 

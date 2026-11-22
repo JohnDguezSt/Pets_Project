@@ -1,0 +1,9 @@
+@layer components {
+  .page {
+    padding-block: var(--space-section);
+  }
+
+  .muted {
+    color: var(--color-text-secondary);
+  }
+}

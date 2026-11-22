@@ -1,0 +1,13 @@
+@layer components {
+  .header {
+    padding-block: var(--space-stack-md);
+    border-block-end: var(--border-width-thin) solid var(--color-border-subtle);
+    background-color: var(--color-surface-card);
+  }
+
+  .brand {
+    color: var(--color-text-primary);
+    font-weight: var(--text-label-weight);
+    text-decoration: none;
+  }
+}

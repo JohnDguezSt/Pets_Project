@@ -26,6 +26,14 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 | Nulo = "no se preguntó"; `unknown` = "no lo sé". Fechas parciales con precisión | Implementada | Doc. 7 |
 | Catálogo de especies (34 taxones, 10 grupos de cuidado) como datos de referencia en la migración | Implementada | Doc. 7 |
 | Pruebas pgTAP de permisos y RLS en la CI con base local desechable | Aplicada | Precisión 5 |
+| Autenticación con correo y contraseña de Supabase Auth, verificación de correo obligatoria; llaves de acceso después | Implementada | Doc. 21, O-03 |
+| Sesión en cookies con `@supabase/ssr`; `getClaims()` (verifica la firma) en servidor; solo URL y clave publicable en la app | Implementada | Precisión 1 |
+| Proxy de Next renueva la sesión; cada página y Server Action vuelve a verificarla (el proxy no es la única barrera) | Implementada | Doc. Next 16 |
+| Enlaces de correo con `token_hash` y confirmación por botón (POST): funcionan en otro navegador y los analizadores de correo no los gastan | Implementada | — |
+| Mismo mensaje exista o no la cuenta (alta y recuperación): no se revela qué correos están registrados | Implementada | — |
+| Regreso tras entrar solo a rutas internas (`safeNextPath`) | Implementada | — |
+| Cambiar la contraseña cierra todas las sesiones | Implementada | — |
+| Las pruebas de navegador solo corren contra Supabase local (la configuración lo impide si no) | Aplicada | Precisión 7 |
 
 ## Terminado
 
@@ -33,12 +41,14 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 
 - **Paso 1b — Componentes atómicos:** Button, Input, Select, RadioGroup, Card, FormField, Alert, EmptyState e iconos de estado, cada uno con su ficha. Catálogo interno en claro y oscuro. Pruebas de accesibilidad automáticas (axe en móvil y escritorio, ambos temas), foco visible y campos con error.
 
-- **Paso 2 — Base de datos y permisos:** tablas `parties`, `care_groups`, `taxa`, `animals` y `bonds`; RLS en todas; `create_animal()`; alta automática de la parte al crear la cuenta (metadatos saneados, zona IANA validada); 60 pruebas pgTAP (acceso cruzado, columnas protegidas, datos inválidos, vínculos vencidos o finalizados, privilegios de funciones) y lint del esquema en la CI. Solo local: **la migración aún no se aplica al proyecto de Supabase.**
+- **Paso 2 — Base de datos y permisos:** tablas `parties`, `care_groups`, `taxa`, `animals` y `bonds`; RLS en todas; `create_animal()`; alta automática de la parte al crear la cuenta (metadatos saneados, zona IANA validada); 60 pruebas pgTAP (acceso cruzado, columnas protegidas, datos inválidos, vínculos vencidos o finalizados, privilegios de funciones) y lint del esquema en la CI. **Aplicada al proyecto de desarrollo el 22 nov 2026** (verificado: 5 tablas con RLS, 34 taxones, Advisors sin errores).
+
+- **Paso 3 — Inicio de sesión:** crear cuenta con verificación de correo, entrar, salir, recuperar y cambiar contraseña; zona horaria tomada del navegador; página protegida mínima (`/mis-mascotas`); cabecera según la sesión; correos en español. Pruebas de navegador contra Supabase local con correo de prueba (Mailpit), incluidas en la CI.
 
 ## Pendiente (en orden)
 
-1. **Aplicar la migración del paso 2 al proyecto de desarrollo de Supabase** (decisión aparte, tras revisar el PR).
-2. **Paso 3:** autenticación.
+1. **Configurar Auth en el proyecto de desarrollo y las variables en Vercel** (lo hace la persona, guiada): URL del sitio y URLs permitidas, plantillas de correo en español, contraseña mínima de 8, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+2. **Antes de la alfa:** servicio de correo propio (SMTP); el de Supabase envía muy pocos correos por hora.
 3. **Pasos 4–7:** Mis mascotas, alta, perfil y edición, fotografía.
 4. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
 
