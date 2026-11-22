@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { getMessages, locale } from "@/i18n";
 import "@/design-system/styles/index.css";
+import { SiteHeader } from "./SiteHeader";
 
 const t = getMessages();
 
@@ -32,7 +33,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang={locale}>
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }

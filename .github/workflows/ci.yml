@@ -33,9 +33,9 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
 
   e2e:
-    name: Accesibilidad en navegador (Playwright + axe)
+    name: Navegador (cuentas, accesibilidad con axe)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -45,6 +45,17 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
+      # Supabase local y desechable (Auth + correo de prueba); nunca un proyecto remoto.
+      - run: npm install --global supabase@3.2.0
+      - run: supabase start -x realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+      - name: Variables de Supabase local
+        run: |
+          eval "$(supabase status -o env)"
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY"
+            echo "MAILPIT_URL=$MAILPIT_URL"
+          } >> "$GITHUB_ENV"
       - run: pnpm test:e2e
         env:
           NEXT_TELEMETRY_DISABLED: "1"
