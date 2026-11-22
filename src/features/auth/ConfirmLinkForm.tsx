@@ -9,7 +9,12 @@ import { FormMessage } from "./FormMessage";
 import { SubmitButton } from "./SubmitButton";
 import { useFocusResult } from "./useFocusResult";
 
-export function ConfirmLinkForm({ tokenHash, type }: { tokenHash: string; type: "email" | "recovery" }) {
+type ConfirmLink =
+  | { kind: "token"; tokenHash: string; type: "email" | "recovery" }
+  | { kind: "code"; code: string; purpose: "alta" | "recuperacion" };
+
+export function ConfirmLinkForm({ link }: { link: ConfirmLink }) {
+  const recovery = link.kind === "token" ? link.type === "recovery" : link.purpose === "recuperacion";
   const t = getMessages().auth.confirm;
   const [state, action] = useActionState(confirmEmailLink, initialAuthFormState);
   const formRef = useRef<HTMLFormElement>(null);
@@ -19,9 +24,18 @@ export function ConfirmLinkForm({ tokenHash, type }: { tokenHash: string; type: 
     <form ref={formRef} action={action}>
       <Stack gap="md">
         <FormMessage state={state} />
-        <p>{type === "recovery" ? t.recoveryIntro : t.emailIntro}</p>
-        <input type="hidden" name="token_hash" value={tokenHash} />
-        <input type="hidden" name="type" value={type} />
+        <p>{recovery ? t.recoveryIntro : t.emailIntro}</p>
+        {link.kind === "token" ? (
+          <>
+            <input type="hidden" name="token_hash" value={link.tokenHash} />
+            <input type="hidden" name="type" value={link.type} />
+          </>
+        ) : (
+          <>
+            <input type="hidden" name="code" value={link.code} />
+            <input type="hidden" name="purpose" value={link.purpose} />
+          </>
+        )}
         <div>
           <SubmitButton pendingLabel={t.submitting}>{t.submit}</SubmitButton>
         </div>

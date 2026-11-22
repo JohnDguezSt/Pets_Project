@@ -36,7 +36,16 @@ export const resetRequestSchema = z.object({ email });
 
 export const newPasswordSchema = z.object({ password: newPassword });
 
-export const confirmSchema = z.object({
-  tokenHash: z.string().min(1).max(256),
-  type: z.enum(["email", "recovery"]),
-});
+/** Para qué se pidió el enlace: alta de cuenta o recuperación de contraseña. */
+export const linkPurposeSchema = z.enum(["alta", "recuperacion"]);
+export type LinkPurpose = z.infer<typeof linkPurposeSchema>;
+
+/**
+ * Dos formatos de enlace, según la plantilla de correo:
+ * - Plantillas propias: `token_hash` + `type` (funciona en cualquier navegador).
+ * - Plantillas por defecto de Supabase: `code` (PKCE; mismo navegador en que se pidió).
+ */
+export const confirmSchema = z.union([
+  z.object({ tokenHash: z.string().min(1).max(256), type: z.enum(["email", "recovery"]) }),
+  z.object({ code: z.string().min(1).max(256), purpose: linkPurposeSchema }),
+]);

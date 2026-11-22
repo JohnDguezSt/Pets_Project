@@ -63,6 +63,8 @@ export const esMX = {
       samePassword: "La contraseña nueva debe ser distinta de la anterior.",
       rateLimited: "Hiciste muchos intentos seguidos. Espera unos minutos y vuelve a intentarlo.",
       linkInvalid: "El enlace ya se usó o venció. Pide uno nuevo.",
+      otherBrowser:
+        "Abre el enlace en el mismo navegador donde creaste la cuenta o pediste el cambio. Si no puedes, pide uno nuevo.",
       unexpected: "Algo salió mal de nuestro lado. Vuelve a intentarlo en un momento.",
     },
     signIn: {
