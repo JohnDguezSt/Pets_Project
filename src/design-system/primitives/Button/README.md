@@ -17,3 +17,7 @@
 **Accesibilidad:** `<button>` nativo; nombre accesible = su texto. `md` mide 44 px de alto para acciones principales en móvil; `sm` mide 36 px (mínimo WCAG: 24 px). Un botón con solo icono no se hace con este componente.
 
 **Cuándo no usarlo:** para enlaces, para un botón con solo icono, ni para «favoritos» con corazón.
+
+## ButtonLink
+
+Enlace de Next.js con el aspecto de Button, para cuando la acción principal lleva a otra página («Registrar mascota»). Variantes `primary`, `secondary` y `ghost`; no hay `danger` ni `loading`, porque navegar no es una acción irreversible ni se queda esperando.

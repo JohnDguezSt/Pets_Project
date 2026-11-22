@@ -5,9 +5,9 @@ import { Stack } from "@/design-system/layout";
 import { getMessages } from "@/i18n";
 import { confirmEmailLink } from "./actions";
 import { initialAuthFormState } from "./form-state";
-import { FormMessage } from "./FormMessage";
-import { SubmitButton } from "./SubmitButton";
-import { useFocusResult } from "./useFocusResult";
+import { FormMessage } from "@/features/forms/FormMessage";
+import { SubmitButton } from "@/features/forms/SubmitButton";
+import { useFocusResult } from "@/features/forms/useFocusResult";
 
 type ConfirmLink =
   | { kind: "token"; tokenHash: string; type: "email" | "recovery" }

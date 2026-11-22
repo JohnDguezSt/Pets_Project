@@ -1,0 +1,35 @@
+@layer components {
+  .option {
+    display: flex;
+    gap: var(--space-inline-sm);
+    align-items: flex-start;
+    min-block-size: var(--size-target-touch);
+    padding-block: var(--space-stack-sm);
+  }
+
+  .checkbox {
+    flex: none;
+    inline-size: var(--size-icon-md);
+    block-size: var(--size-icon-md);
+    margin-block-start: var(--space-stack-xs);
+    accent-color: var(--color-action-primary-bg);
+    cursor: pointer;
+  }
+
+  .label {
+    cursor: pointer;
+  }
+
+  .hint {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--text-caption-size);
+    line-height: var(--text-caption-line-height);
+  }
+
+  .checkbox:disabled,
+  .checkbox:disabled + .label {
+    color: var(--color-action-disabled-text);
+    cursor: not-allowed;
+  }
+}

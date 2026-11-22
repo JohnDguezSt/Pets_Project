@@ -1,0 +1,28 @@
+@layer components {
+  .sectionTitle {
+    font-size: var(--text-heading-3-size);
+    line-height: var(--text-heading-3-line-height);
+  }
+
+  .dateParts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-lg);
+    align-items: flex-start;
+  }
+
+  .short {
+    max-inline-size: 14rem;
+  }
+
+  .year {
+    max-inline-size: 8rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-md);
+    align-items: center;
+  }
+}

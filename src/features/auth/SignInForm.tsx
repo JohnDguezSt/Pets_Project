@@ -5,10 +5,10 @@ import { Stack } from "@/design-system/layout";
 import { getMessages } from "@/i18n";
 import { signIn } from "./actions";
 import { initialAuthFormState } from "./form-state";
-import { FormMessage } from "./FormMessage";
+import { FormMessage } from "@/features/forms/FormMessage";
 import { EmailField, PasswordField } from "./Fields";
-import { SubmitButton } from "./SubmitButton";
-import { useFocusResult } from "./useFocusResult";
+import { SubmitButton } from "@/features/forms/SubmitButton";
+import { useFocusResult } from "@/features/forms/useFocusResult";
 
 /**
  * `extra` va dentro del formulario (p. ej. el campo oculto «siguiente», que

@@ -23,6 +23,11 @@
     transition: background-color var(--duration-fast) var(--easing-standard);
   }
 
+  /* ButtonLink: un enlace con aspecto de botón, sin subrayado. */
+  .button:any-link {
+    text-decoration: none;
+  }
+
   .button[data-size="sm"] {
     min-block-size: var(--size-control-sm);
     padding-inline: var(--space-inline-md);

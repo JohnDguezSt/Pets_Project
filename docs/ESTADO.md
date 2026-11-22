@@ -35,6 +35,10 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 | Regreso tras entrar solo a rutas internas (`safeNextPath`) | Implementada | — |
 | Cambiar la contraseña cierra todas las sesiones | Implementada | — |
 | Las pruebas de navegador solo corren contra Supabase local (la configuración lo impide si no) | Aplicada | Precisión 7 |
+| Mis mascotas lee con la sesión de la persona: RLS decide qué animales ve (vínculo activo); la app no filtra por persona | Implementada | M-01 |
+| Alta desde un Server Action que valida con Zod y llama a `create_animal()`; nunca envía un identificador de persona | Implementada | M-08, precisión 1 |
+| Edad calculada con la fecha civil de la persona en su zona horaria; con mes o año aproximada («Unos 2 años») | Implementada | Doc. 7, precisión 3 |
+| Tipos de la base generados (`pnpm db:types` → `src/server/database.types.ts`) | Aplicada | — |
 
 ## Terminado
 
@@ -44,13 +48,15 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 
 - **Paso 2 — Base de datos y permisos:** tablas `parties`, `care_groups`, `taxa`, `animals` y `bonds`; RLS en todas; `create_animal()`; alta automática de la parte al crear la cuenta (metadatos saneados, zona IANA validada); 60 pruebas pgTAP (acceso cruzado, columnas protegidas, datos inválidos, vínculos vencidos o finalizados, privilegios de funciones) y lint del esquema en la CI. **Aplicada al proyecto de desarrollo el 22 nov 2026** (verificado: 5 tablas con RLS, 34 taxones, Advisors sin errores).
 
-- **Paso 3 — Inicio de sesión:** crear cuenta con verificación de correo, entrar, salir, recuperar y cambiar contraseña; zona horaria tomada del navegador; página protegida mínima (`/mis-mascotas`); cabecera según la sesión; correos en español listos para cuando haya SMTP propio. Pruebas de navegador contra Supabase local con correo de prueba (Mailpit), incluidas en la CI.
+- **Paso 3 — Inicio de sesión:** crear cuenta con verificación de correo, entrar, salir, recuperar y cambiar contraseña; zona horaria tomada del navegador; página protegida mínima (`/mis-mascotas`); cabecera según la sesión; correos en español listos para cuando haya SMTP propio. Pruebas de navegador contra Supabase local con correo de prueba (Mailpit), incluidas en la CI. Auth del proyecto de desarrollo y variables de Vercel configuradas el 22 nov 2026; cuenta real probada en producción ese mismo día.
+
+- **Pasos 4 y 5 — Mis mascotas y registrar mascota:** lista de los animales activos (nombre, especie y edad aproximada) con estado vacío «Agrega a tu primera mascota»; alta en una sola página con nombre y especie obligatorios (botones rápidos, lista completa por grupo de cuidado, «Otro animal» y «No estoy seguro de la especie exacta») y datos opcionales (sexo, fecha de nacimiento exacta, por mes o por año, esterilizado); errores por campo que conservan lo escrito; aviso al volver a la lista. Nuevos componentes `Checkbox` y `ButtonLink`. Pruebas: alta mínima y completa, errores (también fecha futura), otra cuenta no ve el animal ni con su identificador, axe en claro y oscuro, y reglas de edad.
 
 ## Pendiente (en orden)
 
-1. **Configurar Auth en el proyecto de desarrollo y las variables en Vercel** (lo hace la persona, guiada): hecho el 22 nov 2026: URL del sitio, URLs permitidas, confirmación de correo, contraseña mínima de 8 y variables públicas en Vercel. Falta volver a desplegar y probar una cuenta real.
-2. **Antes de la alfa:** SMTP propio con Resend (requiere dominio verificado), activar las plantillas en español en local y en el proyecto remoto.
-3. **Pasos 4–7:** Mis mascotas, alta, perfil y edición, fotografía.
+1. **Paso 6:** perfil del animal y edición.
+2. **Paso 7:** fotografía opcional (bucket privado, limpieza de metadatos).
+3. **Antes de la alfa:** SMTP propio con Resend (requiere dominio verificado), activar las plantillas en español en local y en el proyecto remoto.
 4. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
 
 ## Fuera del primer hito
