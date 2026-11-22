@@ -44,7 +44,7 @@ test("alta mínima: nombre y especie, y vuelve a la lista con un aviso", async (
   await expect(page.getByRole("heading", { level: 1, name: "Registrar mascota" })).toBeVisible();
   await sinViolaciones(page);
 
-  await page.getByLabel("Nombre").fill("  Luna  ");
+  await page.getByLabel("Nombre").filter({ visible: true }).fill("  Luna  ");
   await page.getByRole("radio", { name: "Gato" }).check();
   await page.getByRole("button", { name: "Guardar" }).click();
 
@@ -56,6 +56,12 @@ test("alta mínima: nombre y especie, y vuelve a la lista con un aviso", async (
   await expect(lista).toContainText("Gato · Edad sin registrar");
   await sinViolaciones(page);
 
+  // Registrar otra: el formulario llega vacío, sin lo escrito la vez anterior.
+  await page.getByRole("link", { name: "Registrar mascota" }).click();
+  await expect(page.getByLabel("Nombre").filter({ visible: true })).toHaveValue("");
+  await expect(page.getByRole("radio", { name: "Gato" })).not.toBeChecked();
+  await page.goBack();
+
   // Al recargar sin el parámetro ya no se repite el aviso.
   await page.goto("/mis-mascotas");
   await expect(page.getByRole("status")).toHaveCount(0);
@@ -66,16 +72,16 @@ test("alta completa: especie de la lista, dudosa, con fecha parcial y datos opci
   await crearCuentaConfirmada(page, correoDePrueba("mascota-completa"));
   await page.goto("/mis-mascotas/nueva");
 
-  await page.getByLabel("Nombre").fill("Toto");
+  await page.getByLabel("Nombre").filter({ visible: true }).fill("Toto");
   await page.getByRole("radio", { name: "Otra especie" }).check();
-  await page.getByLabel("Elige la especie").selectOption({ label: "Hurón" });
-  await page.getByLabel("No estoy seguro de la especie exacta").check();
+  await page.getByLabel("Elige la especie").filter({ visible: true }).selectOption({ label: "Hurón" });
+  await page.getByLabel("No estoy seguro de la especie exacta").filter({ visible: true }).check();
   await page.getByRole("radio", { name: "Macho" }).check();
 
   const hoy = hoyEnMazatlan();
   await page.getByRole("radio", { name: "El mes y el año" }).check();
-  await page.getByLabel("Mes", { exact: true }).selectOption(String(hoy.month));
-  await page.getByLabel("Año", { exact: true }).fill(String(hoy.year - 2));
+  await page.getByLabel("Mes", { exact: true }).filter({ visible: true }).selectOption(String(hoy.month));
+  await page.getByLabel("Año", { exact: true }).filter({ visible: true }).fill(String(hoy.year - 2));
   await page.getByRole("group", { name: "¿Está esterilizado?" }).getByRole("radio", { name: "Sí" }).check();
   await sinViolaciones(page);
 
@@ -92,7 +98,7 @@ test("errores por campo: se explican, llevan el foco y conservan lo escrito", as
 
   await page.getByRole("button", { name: "Guardar" }).click();
   await expect(page.getByRole("status")).toContainText("Revisa los datos marcados.");
-  const nombre = page.getByLabel("Nombre");
+  const nombre = page.getByLabel("Nombre").filter({ visible: true });
   await expect(nombre).toBeFocused();
   await expect(nombre).toHaveAttribute("aria-invalid", "true");
   await expect(nombre).toHaveAccessibleDescription(/Escribe su nombre\./);
@@ -104,20 +110,20 @@ test("errores por campo: se explican, llevan el foco y conservan lo escrito", as
   await page.getByRole("radio", { name: "Perro" }).check();
   await page.getByRole("radio", { name: "La fecha exacta" }).check();
   const hoy = hoyEnMazatlan();
-  await page.getByLabel("Fecha de nacimiento").fill(`${hoy.year + 1}-01-15`);
+  await page.getByLabel("Fecha de nacimiento").filter({ visible: true }).fill(`${hoy.year + 1}-01-15`);
   await page.getByRole("button", { name: "Guardar" }).click();
 
-  const fecha = page.getByLabel("Fecha de nacimiento");
+  const fecha = page.getByLabel("Fecha de nacimiento").filter({ visible: true });
   await expect(fecha).toBeFocused();
   await expect(fecha).toHaveAccessibleDescription(/no puede ser posterior a hoy/);
-  await expect(page.getByLabel("Nombre")).toHaveValue("Kira");
+  await expect(page.getByLabel("Nombre").filter({ visible: true })).toHaveValue("Kira");
   await expect(page.getByRole("radio", { name: "Perro" })).toBeChecked();
 
   // Año incompleto.
   await page.getByRole("radio", { name: "Solo el año" }).check();
-  await page.getByLabel("Año", { exact: true }).fill("21");
+  await page.getByLabel("Año", { exact: true }).filter({ visible: true }).fill("21");
   await page.getByRole("button", { name: "Guardar" }).click();
-  const anio = page.getByLabel("Año", { exact: true });
+  const anio = page.getByLabel("Año", { exact: true }).filter({ visible: true });
   await expect(anio).toBeFocused();
   await expect(anio).toHaveAccessibleDescription(/cuatro cifras/);
 
@@ -132,7 +138,7 @@ test("otra cuenta no ve el animal, ni siquiera con su identificador", async ({ b
   const a = await contextoA.newPage();
   await crearCuentaConfirmada(a, correoDePrueba("tutor-a"));
   await a.goto("/mis-mascotas/nueva");
-  await a.getByLabel("Nombre").fill("Secreto");
+  await a.getByLabel("Nombre").filter({ visible: true }).fill("Secreto");
   await a.getByRole("radio", { name: "Conejo" }).check();
   await a.getByRole("button", { name: "Guardar" }).click();
   await expect(a).toHaveURL(/registrado=/);

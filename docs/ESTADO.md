@@ -38,6 +38,10 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 | Mis mascotas lee con la sesión de la persona: RLS decide qué animales ve (vínculo activo); la app no filtra por persona | Implementada | M-01 |
 | Alta desde un Server Action que valida con Zod y llama a `create_animal()`; nunca envía un identificador de persona | Implementada | M-08, precisión 1 |
 | Edad calculada con la fecha civil de la persona en su zona horaria; con mes o año aproximada («Unos 2 años») | Implementada | Doc. 7, precisión 3 |
+| Editar es un UPDATE con la sesión de la persona: deciden los permisos por columna y la política `animals_update_tutor`; sin función nueva ni migración | Implementada | M-15 |
+| Animal ajeno, inexistente o con identificador inválido: la misma página «No encontramos este animal» | Implementada | M-03 |
+| Ids de formulario únicos con `useId`: Next conserva ocultas las páginas visitadas y los ids repetidos rompían las etiquetas | Aplicada | — |
+| Tras guardar se invalida la caché de `/mis-mascotas` (`revalidatePath`) y el formulario de edición se vuelve a montar con cada versión | Aplicada | — |
 | Tipos de la base generados (`pnpm db:types` → `src/server/database.types.ts`) | Aplicada | — |
 
 ## Terminado
@@ -52,12 +56,13 @@ Lista breve de decisiones técnicas, trabajo terminado y pendientes. Se actualiz
 
 - **Pasos 4 y 5 — Mis mascotas y registrar mascota:** lista de los animales activos (nombre, especie y edad aproximada) con estado vacío «Agrega a tu primera mascota»; alta en una sola página con nombre y especie obligatorios (botones rápidos, lista completa por grupo de cuidado, «Otro animal» y «No estoy seguro de la especie exacta») y datos opcionales (sexo, fecha de nacimiento exacta, por mes o por año, esterilizado); errores por campo que conservan lo escrito; aviso al volver a la lista. Nuevos componentes `Checkbox` y `ButtonLink`. Pruebas: alta mínima y completa, errores (también fecha futura), otra cuenta no ve el animal ni con su identificador, axe en claro y oscuro, y reglas de edad.
 
+- **Paso 6 — Perfil y edición:** perfil con especie, edad, nacimiento tal como se registró («Nació en marzo de 2023»), sexo y esterilizado; lo no registrado dice «Sin registrar» con enlace para completarlo. Edición con el mismo formulario del alta, precargado; aviso «Cambios guardados». Pruebas: perfil, edición (también cambiar precisión de fecha y cancelar), errores, otra cuenta recibe «No encontramos este animal» en perfil y edición, y un UPDATE forzado con su sesión no cambia nada; axe en claro y oscuro.
+
 ## Pendiente (en orden)
 
-1. **Paso 6:** perfil del animal y edición.
-2. **Paso 7:** fotografía opcional (bucket privado, limpieza de metadatos).
-3. **Antes de la alfa:** SMTP propio con Resend (requiere dominio verificado), activar las plantillas en español en local y en el proyecto remoto.
-4. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
+1. **Paso 7:** fotografía opcional (bucket privado, limpieza de metadatos).
+2. **Antes de la alfa:** SMTP propio con Resend (requiere dominio verificado), activar las plantillas en español en local y en el proyecto remoto.
+3. **Paso 8:** cierre (accesibilidad manual, lista del doc. 20 §19).
 
 ## Fuera del primer hito
 

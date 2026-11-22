@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Container, Stack } from "@/design-system/layout";
 import { todayIn, toIsoDate } from "@/domain/animals/age";
+import { createAnimal } from "@/features/animals/actions";
 import { AnimalForm } from "@/features/animals/AnimalForm";
 import { getMessages } from "@/i18n";
 import { getMyTimeZone, getSpeciesCatalog } from "@/server/animals";
@@ -32,5 +33,13 @@ export default function NewAnimalPage() {
 async function Form() {
   const user = await requireUser("/mis-mascotas/nueva");
   const [catalog, timeZone] = await Promise.all([getSpeciesCatalog(), getMyTimeZone(user.id)]);
-  return <AnimalForm catalog={catalog} today={toIsoDate(todayIn(timeZone))} />;
+  return (
+    <AnimalForm
+      action={createAnimal}
+      catalog={catalog}
+      today={toIsoDate(todayIn(timeZone))}
+      backHref="/mis-mascotas"
+      backLabel={t.back}
+    />
+  );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { Container, Stack } from "@/design-system/layout";
 import { Alert, EmptyState } from "@/design-system/patterns";
@@ -63,7 +64,9 @@ async function MyPets({ searchParams }: Pick<PageProps<"/mis-mascotas">, "search
             {animals.map((animal) => (
               <Card as="li" key={animal.id}>
                 <Stack gap="xs">
-                  <h2 className={styles.name}>{animal.name}</h2>
+                  <h2 className={styles.name}>
+                    <Link href={`/mis-mascotas/${animal.id}`}>{animal.name}</Link>
+                  </h2>
                   <p className={styles.details}>
                     {animal.speciesUncertain ? `${animal.speciesName}, ${t.uncertainSpecies}` : animal.speciesName}
                     {" · "}
