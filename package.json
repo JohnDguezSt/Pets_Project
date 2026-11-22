@@ -13,7 +13,8 @@
     "lint:css": "stylelint \"src/**/*.css\"",
     "typecheck": "next typegen && tsc --noEmit",
     "check": "pnpm lint && pnpm lint:css && pnpm typecheck",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "db:types": "supabase gen types typescript --schema public > src/server/database.types.ts"
   },
   "packageManager": "pnpm@10.28.0",
   "dependencies": {

@@ -22,6 +22,8 @@ type RadioGroupProps = {
   required?: boolean;
   disabled?: boolean;
   orientation?: "vertical" | "horizontal";
+  /** Avisa del valor elegido; solo desde un Client Component (p. ej. para mostrar campos que dependen de él). */
+  onValueChange?: (value: string) => void;
 };
 
 /** Grupo de opciones excluyentes con radios nativos, agrupados en un fieldset. */
@@ -36,6 +38,7 @@ export function RadioGroup({
   required,
   disabled,
   orientation = "vertical",
+  onValueChange,
 }: RadioGroupProps) {
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
@@ -63,6 +66,9 @@ export function RadioGroup({
                 value={option.value}
                 defaultChecked={defaultValue === option.value}
                 required={required}
+                // aria-invalid no aplica a radios; esta marca permite llevar el foco al grupo con error.
+                data-invalid={error && index === 0 ? true : undefined}
+                onChange={onValueChange ? (event) => onValueChange(event.currentTarget.value) : undefined}
                 aria-describedby={[optionHintId, errorId].filter(Boolean).join(" ") || undefined}
               />
               <label htmlFor={optionId} className={styles.label}>

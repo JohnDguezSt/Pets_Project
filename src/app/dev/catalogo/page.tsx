@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Cluster, Container, Grid, Stack } from "@/design-system/layout";
 import { Alert, EmptyState, FormField } from "@/design-system/patterns";
-import { Button, Card, Input, RadioGroup, Select } from "@/design-system/primitives";
+import { Button, ButtonLink, Card, Checkbox, Input, RadioGroup, Select } from "@/design-system/primitives";
 import { isCatalogEnabled } from "./enabled";
 import styles from "./page.module.css";
 
@@ -42,6 +42,12 @@ export default function CatalogPage() {
                 <Button loading loadingLabel="Guardando…" id={`btn-loading-${theme}`}>
                   Guardar
                 </Button>
+              </Cluster>
+              <Cluster>
+                <ButtonLink href="/dev/catalogo">Registrar mascota</ButtonLink>
+                <ButtonLink href="/dev/catalogo" variant="ghost">
+                  Volver
+                </ButtonLink>
               </Cluster>
             </Stack>
           )}
@@ -109,6 +115,22 @@ export default function CatalogPage() {
                   { value: "unknown", label: "No lo sé", hint: "Puedes cambiarlo después." },
                 ]}
               />
+            </Stack>
+          )}
+        </Specimen>
+
+        <Specimen title="Checkbox">
+          {(theme) => (
+            <Stack gap="xs">
+              <Checkbox id={`uncertain-${theme}`} name="uncertain" label="No estoy seguro de la especie exacta" />
+              <Checkbox
+                id={`hint-${theme}`}
+                name="hint"
+                label="Con aclaración"
+                hint="Texto breve debajo de la etiqueta."
+                defaultChecked
+              />
+              <Checkbox id={`off-${theme}`} name="off" label="Deshabilitada" disabled />
             </Stack>
           )}
         </Specimen>

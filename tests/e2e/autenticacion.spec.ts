@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { CONTRASENA, crearCuentaConfirmada } from "./helpers/cuentas";
 import { correoDePrueba, enlaceDelCorreo } from "./helpers/correo";
 
 /*
@@ -9,22 +10,6 @@ import { correoDePrueba, enlaceDelCorreo } from "./helpers/correo";
 test.beforeEach(({}, testInfo) => {
   test.skip(testInfo.project.name !== "escritorio", "Recorridos con correo: solo en escritorio.");
 });
-
-const CONTRASENA = "una frase larga de prueba";
-
-async function crearCuentaConfirmada(page: Page, correo: string) {
-  await page.goto("/crear-cuenta");
-  await page.getByLabel("Correo electrónico").fill(correo);
-  await page.getByLabel("Contraseña").fill(CONTRASENA);
-  await page.getByRole("button", { name: "Crear cuenta" }).click();
-  await expect(page.getByRole("status")).toContainText("Revisa tu correo");
-
-  const enlace = await enlaceDelCorreo(correo, /Confirm|Confirma/);
-  await page.goto(enlace);
-  await expect(page).toHaveURL(/\/auth\/confirmar\?/);
-  await page.getByRole("button", { name: "Confirmar" }).click();
-  await expect(page).toHaveURL(/\/mis-mascotas$/);
-}
 
 async function entrar(page: Page, correo: string, contrasena: string) {
   await page.getByLabel("Correo electrónico").fill(correo);

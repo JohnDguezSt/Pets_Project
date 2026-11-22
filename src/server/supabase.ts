@@ -2,6 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
+import type { Database } from "./database.types";
 
 /**
  * URL y clave PUBLICABLE del proyecto de Supabase. Ambas son públicas:
@@ -33,7 +34,7 @@ export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
   const { url, publishableKey } = supabaseConfig();
 
-  return createServerClient(url, publishableKey, {
+  return createServerClient<Database>(url, publishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

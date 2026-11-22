@@ -6,4 +6,18 @@
   .muted {
     color: var(--color-text-secondary);
   }
+
+  .list {
+    padding: 0;
+    list-style: none;
+  }
+
+  .name {
+    font-size: var(--text-heading-3-size);
+    line-height: var(--text-heading-3-line-height);
+  }
+
+  .details {
+    color: var(--color-text-secondary);
+  }
 }
