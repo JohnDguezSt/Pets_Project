@@ -252,16 +252,17 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# Correos en español. Los enlaces llevan token_hash a /auth/confirmar, que
-# verifica en el servidor (funciona aunque se abra en otro navegador).
-# Copia el mismo contenido en Authentication → Email Templates del proyecto remoto.
-[auth.email.template.confirmation]
-subject = "Confirma tu correo"
-content_path = "./supabase/templates/confirmacion.html"
-
-[auth.email.template.recovery]
-subject = "Restablece tu contraseña"
-content_path = "./supabase/templates/recuperacion.html"
+# Correos en español (supabase/templates/): DESACTIVADOS mientras el proyecto
+# remoto use el correo de Supabase, que no permite editar plantillas sin SMTP
+# propio. Así la base local se comporta igual que la remota (enlaces con `code`).
+# Se activan junto con el SMTP propio (Resend) antes de la alfa.
+# [auth.email.template.confirmation]
+# subject = "Confirma tu correo"
+# content_path = "./supabase/templates/confirmacion.html"
+#
+# [auth.email.template.recovery]
+# subject = "Restablece tu contraseña"
+# content_path = "./supabase/templates/recuperacion.html"
 
 # [auth.email.template.invite]
 # subject = "You have been invited"

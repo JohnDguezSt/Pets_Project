@@ -19,9 +19,9 @@ async function crearCuentaConfirmada(page: Page, correo: string) {
   await page.getByRole("button", { name: "Crear cuenta" }).click();
   await expect(page.getByRole("status")).toContainText("Revisa tu correo");
 
-  const enlace = await enlaceDelCorreo(correo, /Confirma tu correo/);
-  expect(new URL(enlace).pathname).toBe("/auth/confirmar");
+  const enlace = await enlaceDelCorreo(correo, /Confirm|Confirma/);
   await page.goto(enlace);
+  await expect(page).toHaveURL(/\/auth\/confirmar\?/);
   await page.getByRole("button", { name: "Confirmar" }).click();
   await expect(page).toHaveURL(/\/mis-mascotas$/);
 }
@@ -132,8 +132,9 @@ test.describe("cuenta", () => {
     await page.getByRole("button", { name: "Enviar enlace" }).click();
     await expect(page.getByRole("status")).toContainText("Si hay una cuenta con ese correo");
 
-    const enlace = await enlaceDelCorreo(correo, /Restablece tu contraseña/);
+    const enlace = await enlaceDelCorreo(correo, /Reset|Restablece/);
     await page.goto(enlace);
+    await expect(page).toHaveURL(/tipo=recuperacion/);
     await page.getByRole("button", { name: "Confirmar" }).click();
     await expect(page).toHaveURL(/\/nueva-contrasena$/);
 
@@ -150,10 +151,30 @@ test.describe("cuenta", () => {
   });
 
   test("un enlace de confirmación usado o inventado no da acceso", async ({ page }) => {
-    await page.goto("/auth/confirmar?token_hash=inventado&type=email");
+    await page.goto("/auth/confirmar?tipo=alta&token_hash=inventado&type=email");
     await page.getByRole("button", { name: "Confirmar" }).click();
     await expect(page.getByText("El enlace ya se usó o venció")).toBeVisible();
+
+    await page.goto("/auth/confirmar?tipo=alta&code=inventado");
+    await page.getByRole("button", { name: "Confirmar" }).click();
+    await expect(page.getByText("Abre el enlace en el mismo navegador")).toBeVisible();
+
     await page.goto("/mis-mascotas");
     await expect(page).toHaveURL(/\/entrar/);
+  });
+
+  test("el enlace del correo abierto en otro navegador explica qué hacer", async ({ page, browser }) => {
+    const correo = correoDePrueba("otro-navegador");
+    await page.goto("/crear-cuenta");
+    await page.getByLabel("Correo electrónico").fill(correo);
+    await page.getByLabel("Contraseña").fill(CONTRASENA);
+    await page.getByRole("button", { name: "Crear cuenta" }).click();
+    await expect(page.getByRole("status")).toContainText("Revisa tu correo");
+
+    const otro = await browser.newPage();
+    await otro.goto(await enlaceDelCorreo(correo, /Confirm|Confirma/));
+    await otro.getByRole("button", { name: "Confirmar" }).click();
+    await expect(otro.getByText("Abre el enlace en el mismo navegador")).toBeVisible();
+    await otro.close();
   });
 });

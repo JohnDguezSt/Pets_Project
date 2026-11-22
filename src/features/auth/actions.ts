@@ -49,8 +49,11 @@ function authErrorMessage(code: string | undefined): string {
       return t.errors.rateLimited;
     case "otp_expired":
     case "flow_state_expired":
-    case "flow_state_not_found":
       return t.errors.linkInvalid;
+    case "flow_state_not_found":
+    case "bad_code_verifier":
+    case "pkce_code_verifier_not_found":
+      return t.errors.otherBrowser;
     default:
       return t.errors.unexpected;
   }
@@ -102,7 +105,7 @@ export async function signUp(_prev: AuthFormState, formData: FormData): Promise<
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      emailRedirectTo: `${await requestOrigin()}/auth/confirmar`,
+      emailRedirectTo: `${await requestOrigin()}/auth/confirmar?tipo=alta`,
       // Metadatos que lee private.handle_new_user(); la base los valida.
       data: parsed.data.timeZone ? { time_zone: parsed.data.timeZone } : {},
     },
@@ -125,7 +128,7 @@ export async function requestPasswordReset(_prev: AuthFormState, formData: FormD
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${await requestOrigin()}/auth/confirmar`,
+    redirectTo: `${await requestOrigin()}/auth/confirmar?tipo=recuperacion`,
   });
 
   if (error?.code === "over_email_send_rate_limit" || error?.code === "over_request_rate_limit") {
@@ -140,20 +143,29 @@ export async function requestPasswordReset(_prev: AuthFormState, formData: FormD
  * enlace: así los analizadores de correo que visitan los enlaces no lo gastan.
  */
 export async function confirmEmailLink(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
-  const parsed = confirmSchema.safeParse({
-    tokenHash: text(formData, "token_hash"),
-    type: text(formData, "type"),
-  });
+  const parsed = confirmSchema.safeParse(
+    formData.has("code")
+      ? { code: text(formData, "code"), purpose: text(formData, "purpose") }
+      : { tokenHash: text(formData, "token_hash"), type: text(formData, "type") },
+  );
   if (!parsed.success) return { status: "error", message: t.confirm.missing };
 
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.verifyOtp({
-    token_hash: parsed.data.tokenHash,
-    type: parsed.data.type,
-  });
-  if (error) return { status: "error", message: authErrorMessage(error.code ?? "otp_expired") };
+  let recovery: boolean;
+  if ("code" in parsed.data) {
+    const { error } = await supabase.auth.exchangeCodeForSession(parsed.data.code);
+    if (error) return { status: "error", message: authErrorMessage(error.code ?? "otp_expired") };
+    recovery = parsed.data.purpose === "recuperacion";
+  } else {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: parsed.data.tokenHash,
+      type: parsed.data.type,
+    });
+    if (error) return { status: "error", message: authErrorMessage(error.code ?? "otp_expired") };
+    recovery = parsed.data.type === "recovery";
+  }
 
-  redirect(parsed.data.type === "recovery" ? "/nueva-contrasena" : "/mis-mascotas");
+  redirect(recovery ? "/nueva-contrasena" : "/mis-mascotas");
 }
 
 export async function updatePassword(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {

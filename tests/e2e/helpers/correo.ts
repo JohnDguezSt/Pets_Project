@@ -19,7 +19,8 @@ export async function enlaceDelCorreo(to: string, asunto: RegExp): Promise<strin
         const message = search.messages.find((m) => asunto.test(m.Subject));
         if (!message) return undefined;
         const full = (await (await fetch(`${MAILPIT_URL}/api/v1/message/${message.ID}`)).json()) as MailpitMessage;
-        const match = full.HTML.match(/href="([^"]*token_hash=[^"]*)"/);
+        // Plantilla por defecto (/auth/v1/verify?…&redirect_to=…) o propia (token_hash).
+        const match = full.HTML.match(/href="([^"]*(?:\/auth\/v1\/verify|token_hash=)[^"]*)"/);
         link = match?.[1]?.replaceAll("&amp;", "&");
         return link;
       },

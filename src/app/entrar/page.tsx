@@ -15,9 +15,18 @@ export const metadata: Metadata = { title: t.title };
 export default function SignInPage({ searchParams }: PageProps<"/entrar">) {
   return (
     <AuthPage title={t.title}>
-      <Suspense fallback={<SignInForm />}>
-        <SignInWithParams searchParams={searchParams} />
-      </Suspense>
+      <Stack gap="md">
+        <Suspense fallback={null}>
+          <PasswordUpdatedNotice searchParams={searchParams} />
+        </Suspense>
+        <SignInForm
+          extra={
+            <Suspense fallback={null}>
+              <NextInput searchParams={searchParams} />
+            </Suspense>
+          }
+        />
+      </Stack>
       <Stack gap="xs" as="ul" role="list">
         <li>
           <Link href="/recuperar">{t.forgot}</Link>
@@ -30,20 +39,22 @@ export default function SignInPage({ searchParams }: PageProps<"/entrar">) {
   );
 }
 
-async function SignInWithParams({ searchParams }: Pick<PageProps<"/entrar">, "searchParams">) {
+type Params = Pick<PageProps<"/entrar">, "searchParams">;
+
+async function PasswordUpdatedNotice({ searchParams }: Params) {
+  const params = await searchParams;
+  if (params.aviso !== "contrasena-actualizada") return null;
+  return (
+    <Alert tone="success" announce="polite">
+      {t.passwordUpdated}
+    </Alert>
+  );
+}
+
+/** Ruta a la que volver después de entrar; solo rutas internas. */
+async function NextInput({ searchParams }: Params) {
   const params = await searchParams;
   const rawNext = typeof params.siguiente === "string" ? params.siguiente : undefined;
-  const next = rawNext ? safeNextPath(rawNext) : undefined;
-  const passwordUpdated = params.aviso === "contrasena-actualizada";
-
-  return (
-    <Stack gap="md">
-      {passwordUpdated ? (
-        <Alert tone="success" announce="polite">
-          {t.passwordUpdated}
-        </Alert>
-      ) : null}
-      <SignInForm next={next} />
-    </Stack>
-  );
+  if (!rawNext) return null;
+  return <input type="hidden" name="siguiente" value={safeNextPath(rawNext)} />;
 }

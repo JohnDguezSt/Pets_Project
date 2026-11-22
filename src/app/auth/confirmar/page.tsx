@@ -29,13 +29,18 @@ async function ConfirmWithParams({ searchParams }: Pick<PageProps<"/auth/confirm
   const params = await searchParams;
   const tokenHash = typeof params.token_hash === "string" ? params.token_hash : "";
   const type = params.type === "email" || params.type === "recovery" ? params.type : null;
+  const code = typeof params.code === "string" ? params.code : "";
+  const purpose = params.tipo === "recuperacion" ? "recuperacion" : "alta";
 
-  if (!tokenHash || !type) {
-    return (
-      <Alert tone="warning" title={t.missing}>
-        <Link href="/recuperar">{getMessages().auth.reset.title}</Link>
-      </Alert>
-    );
+  if (tokenHash && type) {
+    return <ConfirmLinkForm link={{ kind: "token", tokenHash, type }} />;
   }
-  return <ConfirmLinkForm tokenHash={tokenHash} type={type} />;
+  if (code) {
+    return <ConfirmLinkForm link={{ kind: "code", code, purpose }} />;
+  }
+  return (
+    <Alert tone="warning" title={t.missing}>
+      <Link href="/recuperar">{getMessages().auth.reset.title}</Link>
+    </Alert>
+  );
 }
