@@ -12,8 +12,8 @@ test.beforeEach(({}, testInfo) => {
 });
 
 async function entrar(page: Page, correo: string, contrasena: string) {
-  await page.getByLabel("Correo electrónico").fill(correo);
-  await page.getByLabel("Contraseña").fill(contrasena);
+  await page.getByLabel("Correo electrónico").filter({ visible: true }).fill(correo);
+  await page.getByLabel("Contraseña").filter({ visible: true }).fill(contrasena);
   await page.getByRole("button", { name: "Entrar" }).click();
 }
 
@@ -64,18 +64,18 @@ test.describe("cuenta", () => {
 
   test("datos inválidos: errores en cada campo y foco en el primero", async ({ page }) => {
     await page.goto("/crear-cuenta");
-    await page.getByLabel("Correo electrónico").fill("no-es-correo");
-    await page.getByLabel("Contraseña").fill("corta");
+    await page.getByLabel("Correo electrónico").filter({ visible: true }).fill("no-es-correo");
+    await page.getByLabel("Contraseña").filter({ visible: true }).fill("corta");
     await page.getByRole("button", { name: "Crear cuenta" }).click();
 
-    const correo = page.getByLabel("Correo electrónico");
+    const correo = page.getByLabel("Correo electrónico").filter({ visible: true });
     await expect(correo).toHaveAttribute("aria-invalid", "true");
     await expect(correo).toBeFocused();
     await expect(correo).toHaveAccessibleDescription(/correo válido/);
-    await expect(page.getByLabel("Contraseña")).toHaveAccessibleDescription(/al menos 8 caracteres/);
+    await expect(page.getByLabel("Contraseña").filter({ visible: true })).toHaveAccessibleDescription(/al menos 8 caracteres/);
     // El correo escrito se conserva; la contraseña no se devuelve.
     await expect(correo).toHaveValue("no-es-correo");
-    await expect(page.getByLabel("Contraseña")).toHaveValue("");
+    await expect(page.getByLabel("Contraseña").filter({ visible: true })).toHaveValue("");
   });
 
   test("contraseña incorrecta: mensaje genérico", async ({ page }) => {
@@ -113,7 +113,7 @@ test.describe("cuenta", () => {
     await expect(page).toHaveURL(/\/$/);
 
     await page.goto("/recuperar");
-    await page.getByLabel("Correo electrónico").fill(correo);
+    await page.getByLabel("Correo electrónico").filter({ visible: true }).fill(correo);
     await page.getByRole("button", { name: "Enviar enlace" }).click();
     await expect(page.getByRole("status")).toContainText("Si hay una cuenta con ese correo");
 
@@ -124,7 +124,7 @@ test.describe("cuenta", () => {
     await expect(page).toHaveURL(/\/nueva-contrasena$/);
 
     const nueva = "otra frase larga distinta";
-    await page.getByLabel("Contraseña nueva").fill(nueva);
+    await page.getByLabel("Contraseña nueva").filter({ visible: true }).fill(nueva);
     await page.getByRole("button", { name: "Guardar contraseña" }).click();
     await expect(page).toHaveURL(/\/entrar\?aviso=contrasena-actualizada$/);
     await expect(page.getByText("Ya puedes entrar con tu contraseña nueva")).toBeVisible();
@@ -151,8 +151,8 @@ test.describe("cuenta", () => {
   test("el enlace del correo abierto en otro navegador explica qué hacer", async ({ page, browser }) => {
     const correo = correoDePrueba("otro-navegador");
     await page.goto("/crear-cuenta");
-    await page.getByLabel("Correo electrónico").fill(correo);
-    await page.getByLabel("Contraseña").fill(CONTRASENA);
+    await page.getByLabel("Correo electrónico").filter({ visible: true }).fill(correo);
+    await page.getByLabel("Contraseña").filter({ visible: true }).fill(CONTRASENA);
     await page.getByRole("button", { name: "Crear cuenta" }).click();
     await expect(page.getByRole("status")).toContainText("Revisa tu correo");
 

@@ -15,6 +15,7 @@ export const esMX = {
   ui: {
     optional: "opcional",
     loading: "Cargando…",
+    cancel: "Cancelar",
     status: {
       info: "Información",
       success: "Hecho",
@@ -121,6 +122,30 @@ export const esMX = {
     uncertainSpecies: "especie por confirmar",
     loadError: "No pudimos cargar tus animales. Recarga la página en un momento.",
   },
+  animalProfile: {
+    title: "Perfil de mascota",
+    back: "Mis mascotas",
+    edit: "Editar datos",
+    editTitle: (name: string) => `Editar a ${name}`,
+    saved: "Cambios guardados.",
+    detailsTitle: "Datos básicos",
+    species: "Especie",
+    age: "Edad",
+    birth: "Nacimiento",
+    sex: "Sexo",
+    sterilized: "Esterilizado",
+    notRecorded: "Sin registrar",
+    /** Enlaces para completar un dato; cada uno nombra su campo para que sea único. */
+    addBirth: "Agregar nacimiento",
+    addSex: "Agregar sexo",
+    addSterilized: "Indicar si está esterilizado",
+    sexValues: { female: "Hembra", male: "Macho", unknown: "No se sabe" },
+    sterilizedValues: { yes: "Sí", no: "No", unknown: "No se sabe" },
+    bornOn: (date: string) => `Nació el ${date}`,
+    bornIn: (date: string) => `Nació en ${date}`,
+    notFoundTitle: "No encontramos este animal",
+    notFound: "Puede que el enlace esté incompleto o que este animal no esté en tu cuenta.",
+  },
   /** Edad mostrada a partir de una fecha de nacimiento completa o parcial. */
   age: {
     unknown: "Edad sin registrar",
@@ -194,6 +219,7 @@ export const esMX = {
     errors: {
       unexpected: "No pudimos guardar. Vuelve a intentarlo en un momento.",
       session: "Tu sesión terminó. Entra de nuevo para guardar.",
+      notAllowed: "No puedes editar este animal. Solo su tutor o tutora puede hacerlo.",
     },
   },
 } as const;

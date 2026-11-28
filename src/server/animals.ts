@@ -1,5 +1,7 @@
 import "server-only";
+import { z } from "zod";
 import type { DatePrecision } from "@/domain/animals/age";
+import type { Database } from "./database.types";
 import { createSupabaseServerClient } from "./supabase";
 
 export type AnimalSummary = {
@@ -9,6 +11,18 @@ export type AnimalSummary = {
   speciesUncertain: boolean;
   birthDate: string | null;
   birthDatePrecision: DatePrecision | null;
+};
+
+type Enums = Database["public"]["Enums"];
+
+export type AnimalDetail = AnimalSummary & {
+  taxonId: string;
+  sex: Enums["animal_sex"] | null;
+  sterilized: Enums["tri_state"] | null;
+  /** Instante de la última edición; identifica la versión de los datos. */
+  updatedAt: string;
+  /** La persona tiene un vínculo de tutor activo: puede editar. */
+  canEdit: boolean;
 };
 
 export type TaxonOption = { id: string; slug: string; name: string };
@@ -40,6 +54,49 @@ export async function listMyAnimals(): Promise<AnimalSummary[]> {
     birthDate: row.birth_date,
     birthDatePrecision: row.birth_date_precision,
   }));
+}
+
+/**
+ * Un animal visible para la persona, o null si no existe o no es suyo: las
+ * dos situaciones se ven igual para no revelar qué identificadores existen.
+ */
+export async function getMyAnimal(id: string): Promise<AnimalDetail | null> {
+  if (!z.uuid().safeParse(id).success) return null;
+  const supabase = await createSupabaseServerClient();
+  const [animal, bond] = await Promise.all([
+    supabase
+      .from("animals")
+      .select(
+        "id, name, taxon_id, taxon_certainty, sex, sterilized, birth_date, birth_date_precision, updated_at, taxon:taxa(common_name_es)",
+      )
+      .eq("id", id)
+      .eq("status", "active")
+      .maybeSingle(),
+    // RLS de bonds: cada persona solo ve los suyos.
+    supabase
+      .from("bonds")
+      .select("id")
+      .eq("animal_id", id)
+      .eq("kind", "tutor")
+      .eq("status", "active")
+      .limit(1),
+  ]);
+  if (animal.error) throw new Error(`No se pudo leer el animal: ${animal.error.code}`);
+  if (!animal.data) return null;
+  const row = animal.data;
+  return {
+    id: row.id,
+    name: row.name,
+    taxonId: row.taxon_id,
+    speciesName: row.taxon.common_name_es,
+    speciesUncertain: row.taxon_certainty === "uncertain",
+    sex: row.sex,
+    sterilized: row.sterilized,
+    birthDate: row.birth_date,
+    birthDatePrecision: row.birth_date_precision,
+    updatedAt: row.updated_at,
+    canEdit: (bond.data?.length ?? 0) > 0,
+  };
 }
 
 /** Catálogo de especies para el formulario de alta. */

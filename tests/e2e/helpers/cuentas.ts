@@ -5,8 +5,8 @@ export const CONTRASENA = "una frase larga de prueba";
 
 export async function crearCuentaConfirmada(page: Page, correo: string) {
   await page.goto("/crear-cuenta");
-  await page.getByLabel("Correo electrónico").fill(correo);
-  await page.getByLabel("Contraseña").fill(CONTRASENA);
+  await page.getByLabel("Correo electrónico").filter({ visible: true }).fill(correo);
+  await page.getByLabel("Contraseña").filter({ visible: true }).fill(CONTRASENA);
   await page.getByRole("button", { name: "Crear cuenta" }).click();
   await expect(page.getByRole("status")).toContainText("Revisa tu correo");
 

@@ -15,7 +15,7 @@ const optionalEnum = <T extends readonly [string, ...string[]]>(values: T) =>
     .catch(undefined);
 
 /**
- * Convierte lo enviado en los argumentos de create_animal(). `today` es la
+ * Convierte lo enviado en los datos de un animal. `today` es la
  * fecha civil de la persona en su zona horaria; la base vuelve a comprobar
  * que la fecha no sea futura.
  */
@@ -86,16 +86,18 @@ export function animalSchema(today: CivilDate) {
       }
 
       return {
-        p_name: name.data ?? "",
-        p_taxon_id: taxonId.data ?? "",
-        p_taxon_certainty: input.uncertain ? ("uncertain" as const) : ("certain" as const),
-        p_sex: input.sex,
-        p_sterilized: input.sterilized,
-        p_birth_date: birthDate ?? undefined,
-        p_birth_date_precision: birthDate && precision ? precision : undefined,
+        name: name.data ?? "",
+        taxonId: taxonId.data ?? "",
+        taxonCertainty: input.uncertain ? ("uncertain" as const) : ("certain" as const),
+        sex: input.sex ?? null,
+        sterilized: input.sterilized ?? null,
+        birthDate: birthDate,
+        birthDatePrecision: birthDate && precision ? precision : null,
       };
     });
 }
+
+export type AnimalInput = z.output<ReturnType<typeof animalSchema>>;
 
 /** Lee el formulario tal como llegó, sin interpretarlo. */
 export function readAnimalForm(formData: FormData): AnimalFormValues {

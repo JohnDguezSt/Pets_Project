@@ -24,7 +24,6 @@ export type AnimalFormState = {
   attempt: number;
 };
 
-export const initialAnimalFormState: AnimalFormState = { status: "idle", attempt: 0 };
 
 /** Valor del grupo de especie que muestra la lista completa. */
 export const OTHER_SPECIES = "lista";

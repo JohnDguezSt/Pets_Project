@@ -49,7 +49,7 @@ test("el foco con teclado es visible", async ({ page, browserName }) => {
 
 test("los campos con error se anuncian como inválidos", async ({ page }) => {
   await page.goto("/dev/catalogo");
-  const weight = page.getByLabel("Peso en kg").first();
+  const weight = page.getByLabel("Peso en kg").filter({ visible: true }).first();
   await expect(weight).toHaveAttribute("aria-invalid", "true");
   await expect(weight).toHaveAccessibleDescription(/mayor que 0/);
 });
